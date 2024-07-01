@@ -3,12 +3,10 @@ package com.example.backend.entity.order;
 import com.example.backend.entity.User;
 import com.example.backend.enums.OrderStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -17,6 +15,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(of = "id")
 public class Order {
 
     @Id
@@ -38,6 +37,14 @@ public class Order {
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
+    @Column(name = "created_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
+    @Column(name = "delivery_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deliveryAt;
+    @Column(name = "total_sum")
+    private Double totalSum;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "order")
     private List<ProductInOrder> products;
 

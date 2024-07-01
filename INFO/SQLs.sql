@@ -30,7 +30,10 @@ CREATE TABLE tea_order
     buyer_info_id BIGINT REFERENCES buyer_info (id),
     card_info_id  BIGINT REFERENCES card_info (id),
     user_id       BIGINT       REFERENCES tea_user (id) ON DELETE SET NULL,
-    status        VARCHAR(256) NOT NULL
+    status        VARCHAR(256) NOT NULL,
+    created_at    TIMESTAMP,
+    delivery_at   TIMESTAMP,
+    total_sum     FLOAT
 );
 
 CREATE TABLE product_in_order

@@ -1,7 +1,9 @@
 package com.example.backend.exceptions;
 
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+@Getter
 public class OrderException extends RuntimeException {
     private final HttpStatus code;
 
@@ -10,7 +12,4 @@ public class OrderException extends RuntimeException {
         this.code = code;
     }
 
-    public HttpStatus getCode() {
-        return code;
-    }
 }

@@ -1,6 +1,5 @@
 package com.example.backend.dto.orderDtos;
 
-import com.example.backend.dto.userDtos.AddressDto;
 import com.example.backend.dto.userDtos.UserDto;
 import com.example.backend.enums.OrderStatus;
 import lombok.AllArgsConstructor;
@@ -9,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -24,6 +24,9 @@ public class OrderDto {
     private UserDto user;
     private OrderStatus status;
     private List<ProductInOrderDto> products;
+    private Date createdAt;
+    private Date deliveryAt;
+    private Integer totalSum;
 
     public void addProduct(ProductInOrderDto product) {
         if (products == null) {

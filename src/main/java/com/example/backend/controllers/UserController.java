@@ -2,6 +2,7 @@ package com.example.backend.controllers;
 
 import com.example.backend.dto.userDtos.EditUserDto;
 import com.example.backend.dto.userDtos.UserDto;
+import com.example.backend.enums.Role;
 import com.example.backend.sercives.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -22,9 +25,23 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/customers")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public ResponseEntity<List<UserDto>> getUsers(){
+        return ResponseEntity.ok(userService.findUsersByRole(Role.USER));
+    }
+
     @GetMapping("/current")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public ResponseEntity<UserDto> getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDto userDto = (UserDto) authentication.getPrincipal();
+        return ResponseEntity.ok(userDto);
+    }
+
+    @GetMapping("/admin")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public ResponseEntity<UserDto> getAdminUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDto userDto = (UserDto) authentication.getPrincipal();
         return ResponseEntity.ok(userDto);

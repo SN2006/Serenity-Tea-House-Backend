@@ -33,15 +33,14 @@ public class AppConvector {
     }
 
     public OrderDto convertToOrderDto(Order order) {
-        OrderDto orderDto = new OrderDto();
-        orderDto.setId(order.getId());
-        orderDto.setStatus(order.getStatus());
+        OrderDto orderDto = modelMapper.map(order, OrderDto.class);
         orderDto.setAddress(modelMapper.map(order.getAddress(), OrderAddressDto.class));
         orderDto.setBuyerInfo(modelMapper.map(order.getBuyerInfo(), OrderBuyerInfoDto.class));
         orderDto.setCardInfo(modelMapper.map(order.getCardInfo(), CardInfoDto.class));
         if (order.getUser() != null){
             orderDto.setUser(convertToUserDto(order.getUser()));
         }
+        orderDto.setProducts(null);
         order.getProducts().forEach(productInOrder -> {
             orderDto.addProduct(convertToProductInOrderDto(productInOrder));
         });

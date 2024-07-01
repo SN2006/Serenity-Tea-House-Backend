@@ -4,6 +4,8 @@ import com.example.backend.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "tea_user")
 @Getter
@@ -32,6 +34,12 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private Role role;
+    @Column(name = "created_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
+    @Column(name = "last_visit")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastVisit;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;

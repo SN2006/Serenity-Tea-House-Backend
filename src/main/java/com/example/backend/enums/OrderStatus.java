@@ -1,10 +1,14 @@
 package com.example.backend.enums;
 
-public enum OrderStatus {
-    IN_PROCESSING ("IN_PROCESSING"),
-    PAID ("PAID");
+import lombok.Getter;
 
-    private String status;
+@Getter
+public enum OrderStatus {
+    NEW("NEW"),
+    IN_PROCESSING ("IN_PROCESSING"),
+    COMPLETED ("COMPLETED"),;
+
+    private final String status;
     OrderStatus(String status) {
         this.status = status;
     }
