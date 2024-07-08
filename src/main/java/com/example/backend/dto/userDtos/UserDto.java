@@ -1,6 +1,7 @@
 package com.example.backend.dto.userDtos;
 
 import com.example.backend.enums.Role;
+import jakarta.persistence.Column;
 import lombok.*;
 
 import java.util.Date;
@@ -17,6 +18,8 @@ public class UserDto {
     private String middleName;
     private String email;
     private String phone;
+    private String position;
+    private String nickname;
     private Role role;
     private String token;
     private AddressDto address;

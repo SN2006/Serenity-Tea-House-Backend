@@ -31,6 +31,10 @@ public class User {
     private String password;
     @Column(name = "phone")
     private String phone;
+    @Column(name = "position")
+    private String position;
+    @Column(name = "nickname")
+    private String nickname;
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private Role role;
@@ -44,4 +48,22 @@ public class User {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", phone='" + phone + '\'' +
+                ", position='" + position + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", role=" + role +
+                ", createdAt=" + createdAt +
+                ", lastVisit=" + lastVisit +
+                ", address=" + address +
+                '}';
+    }
 }

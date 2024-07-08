@@ -24,5 +24,7 @@ public class EditUserDto {
     private String phone;
     @NotNull
     private AddressDto address;
+    @NotNull
+    private String nickname;
 
 }

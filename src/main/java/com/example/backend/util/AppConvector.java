@@ -1,5 +1,7 @@
 package com.example.backend.util;
 
+import com.example.backend.dto.chatRoom.ChatRoomDto;
+import com.example.backend.dto.chatRoom.MessageDto;
 import com.example.backend.dto.orderDtos.*;
 import com.example.backend.dto.productDtos.ProductDto;
 import com.example.backend.dto.userDtos.AddressDto;
@@ -9,6 +11,8 @@ import com.example.backend.dto.userDtos.UserDto;
 import com.example.backend.entity.Address;
 import com.example.backend.entity.Product;
 import com.example.backend.entity.User;
+import com.example.backend.entity.chatRoom.ChatRoom;
+import com.example.backend.entity.chatRoom.Message;
 import com.example.backend.entity.order.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +82,20 @@ public class AppConvector {
         ProductDto productDto = modelMapper.map(product, ProductDto.class);
         product.getImages().forEach(productImage -> productDto.addImagesId(productImage.getId()));
         return productDto;
+    }
+
+    public ChatRoomDto convertToChatRoomDto(ChatRoom chatRoom){
+        ChatRoomDto chatRoomDto = modelMapper.map(chatRoom, ChatRoomDto.class);
+        chatRoomDto.setUsers(chatRoom.getUsers().stream().map(this::convertToUserDto).toList());
+        chatRoomDto.setMessages(chatRoom.getMessages().stream().map(this::convertToMessageDto).toList());
+        return chatRoomDto;
+    }
+
+    public MessageDto convertToMessageDto(Message message){
+        MessageDto messageDto = modelMapper.map(message, MessageDto.class);
+        messageDto.setType(message.getType());
+        messageDto.setFrom(convertToUserDto(message.getFrom()));
+        return messageDto;
     }
 
 }

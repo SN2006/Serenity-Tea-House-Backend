@@ -25,10 +25,24 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping()
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        return ResponseEntity.ok(userService.findAll());
+    }
+
     @GetMapping("/customers")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<List<UserDto>> getUsers(){
         return ResponseEntity.ok(userService.findUsersByRole(Role.USER));
+    }
+
+    @GetMapping("/admins-without-me")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    public ResponseEntity<List<UserDto>> getAdmins(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDto userDto = (UserDto) authentication.getPrincipal();
+        return ResponseEntity.ok(userService.findByRoleWithoutId(Role.ADMIN, userDto.getId()));
     }
 
     @GetMapping("/current")
@@ -54,6 +68,12 @@ public class UserController {
         return ResponseEntity.ok(
                 userService.edit(id, editUserDto)
         );
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @GetMapping("/nicknames/without-id/{userId}")
+    public ResponseEntity<List<String>> getNicknames(@PathVariable("userId") Long userId) {
+        return ResponseEntity.ok(userService.getNicknamesWithoutId(userId));
     }
 
 }

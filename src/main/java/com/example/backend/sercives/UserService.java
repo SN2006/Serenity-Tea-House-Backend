@@ -56,6 +56,9 @@ public class UserService {
         User user = convector.convertToUser(signUpDto);
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(signUpDto.getPassword())));
         user.setRole(Role.USER);
+        user.setPosition("Customer");
+        user.setNickname(String.format("@%s_%s_%s_%d", user.getName(),
+                user.getSurname(), user.getMiddleName(), (long) (Math.random() * 1_000_000_000)));
         Address address = new Address();
         address.setCountry("Ukraine");
         address.setCity("");
@@ -79,6 +82,9 @@ public class UserService {
         editUser.setEmail(userFromDb.getEmail());
         editUser.setPassword(userFromDb.getPassword());
         editUser.setRole(userFromDb.getRole());
+        editUser.setPosition(userFromDb.getPosition());
+        editUser.setCreatedAt(editUser.getCreatedAt());
+        editUser.setLastVisit(editUser.getLastVisit());
 
         User savedUser = userRepository.save(editUser);
         return convector.convertToUserDto(savedUser);
@@ -103,5 +109,34 @@ public class UserService {
                     );
                     return userDto;
                 }).toList();
+    }
+
+    public List<UserDto> findByRoleWithoutId(Role role, Long excludedId){
+        return userRepository.findByRole(role).stream()
+                .filter(userDto -> !userDto.getId().equals(excludedId))
+                .map(convector::convertToUserDto)
+                .toList();
+    }
+
+    public List<UserDto> findAll(){
+        return userRepository.findAll()
+                .stream().map(convector::convertToUserDto)
+                .toList();
+    }
+
+    public User findUserById(Long id){
+        return userRepository.findById(id).orElseThrow(() -> new AuthException("Unknown user", HttpStatus.NOT_FOUND));
+    }
+
+    public List<String> getNicknames(){
+        return userRepository.findAll()
+                .stream().map(User::getNickname)
+                .toList();
+    }
+
+    public List<String> getNicknamesWithoutId(Long userId){
+        return userRepository.findAll()
+                .stream().filter(user -> !user.getId().equals(userId))
+                .map(User::getNickname).toList();
     }
 }
